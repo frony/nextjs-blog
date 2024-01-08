@@ -16,6 +16,7 @@ export default function Page() {
           <div
               className="h-0 w-0 border-b-[30px] border-l-[20px] border-r-[20px] border-b-black border-l-transparent border-r-transparent"
           />
+          <h1>Tutorial & Documentation</h1>
           <div className={styles.shape}></div>
           <p className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
             <strong>Welcome to Acme.</strong> This is the example for the{' '}
@@ -33,8 +34,8 @@ export default function Page() {
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           {/* Add Hero Images Here */}
-          <Image src={'/hero-desktop.png'} alt={'Screenshots fo the dashboard project showing desktop version'} width={1000} height={760} className={'hidden md:block'}/>
-          <Image src={'/hero-mobile.png'} alt={'Screenshots fo the dashboard project showing mobile version'} width={560} height={620} className={'block md:hidden'} />
+          <Image src={'/hero-desktop.png'} alt={'Screenshots of the dashboard project showing desktop version'} width={1000} height={760} className={'hidden md:block'}/>
+          <Image src={'/hero-mobile.png'} alt={'Screenshots of the dashboard project showing mobile version'} width={560} height={620} className={'block md:hidden'} />
         </div>
       </div>
     </main>
