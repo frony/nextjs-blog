@@ -15,6 +15,15 @@ const FormSchema = z.object({
     date: z.string()
 });
 
+export type State = {
+    errors?: {
+        customerId?: string[],
+        amount?: string[],
+        status?: string[],
+    },
+    message?: string | null,
+};
+
 // Use Zod to update the expected types
 const UpdateInvoice = FormSchema.omit({id: true, date: true });
 /**
@@ -25,14 +34,29 @@ const UpdateInvoice = FormSchema.omit({id: true, date: true });
  * Calling revalidatePath to clear the client cache and make a new server request.
  * Calling redirect to redirect the user to the invoice's page.
  * @param id
+ * @param prevState
  * @param formData
  */
-export async function updateInvoice(id: string, formData: FormData) {
-    const { customerId, amount, status } = UpdateInvoice.parse({
+export async function updateInvoice(id: string, prevState: State, formData: FormData) {
+    const validatedFields = UpdateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
     });
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Update Invoice.',
+        };
+    }
+
+    const { customerId, amount, status } = validatedFields.data;
+
+    // const { customerId, amount, status } = UpdateInvoice.parse({
+    //     customerId: formData.get('customerId'),
+    //     amount: formData.get('amount'),
+    //     status: formData.get('status'),
+    // });
 
     const amountInCents = amount * 100;
 
@@ -51,15 +75,6 @@ export async function updateInvoice(id: string, formData: FormData) {
 }
 
 const CreateInvoice = FormSchema.omit({id: true, date: true});
-
-export type State = {
-    errors?: {
-        customerId?: string[],
-        amount?: string[],
-        status?: string[],
-    },
-    message?: string | null,
-};
 
 export async function createInvoice(prevState: State, formData: FormData) {
     const validatedFields = CreateInvoice.safeParse({
